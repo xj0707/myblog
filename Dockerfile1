@@ -1,0 +1,11 @@
+# FROM keymetrics/pm2
+# COPY . /home/www/myapp
+# WORKDIR /home/www/myapp
+# EXPOSE 3001
+# ENTRYPOINT [ "pm2-runtime","start","./bin/www2" ]
+
+FROM node:alpine
+COPY . /home/www/myapp
+WORKDIR /home/www/myapp
+EXPOSE 3001
+ENTRYPOINT [ "node","./bin/www2" ]

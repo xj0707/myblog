@@ -1,0 +1,45 @@
+version: "3.7"
+services:
+  server1:
+    container_name: webapp1
+    build: ./
+    ports:
+      - "3000:3000"
+    networks:
+      - testnet
+    depends_on:
+      - mongo
+  server2:
+    container_name: webapp2
+    build:
+      context: ./
+      dockerfile: Dockerfile1
+    ports:
+      - "3001:3001"
+    networks:
+      - testnet
+    depends_on:
+      - mongo
+  nginx:
+    container_name: nginx
+    build:
+      context: ./config/nginx
+    ports:
+      - 8090:8090
+    networks:
+      - testnet
+    depends_on:
+      - server1
+      - server2
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    volumes:
+      - ./_db/mongo:/data/db #host_db:container_db
+    ports:
+      - 27017:27017
+    restart: always
+    networks:
+      - testnet
+networks:
+  testnet:
